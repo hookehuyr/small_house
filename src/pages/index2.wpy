@@ -1,0 +1,92 @@
+<style lang="less">
+
+</style>
+<wxs module="m1" lang="babel">
+const getTime = (time) => {
+  let date = getDate(time);
+  let hour = date.getHours();
+  let mins = date.getMinutes();
+  let sec = date.getSeconds();
+  let milli = date.getMilliseconds();
+  return `${hour}:${mins}:${sec}.${milli}`;
+}
+module.exports.getTime = getTime;
+</wxs>
+<template>
+  <div>
+    <div class="">第二个</div>
+    <custom-tab-bar></custom-tab-bar>
+  </div>
+</template>
+
+<script>
+  import wepy from '@wepy/core'
+  import eventHub from '../common/eventHub';
+  import { mapState } from '@wepy/x';
+  import store from '../store';
+  // import testMixin from '../mixins/test'
+
+  wepy.page({
+    store,
+    config: {
+      navigationBarTitleText: 'test'
+    },
+
+    hooks: {
+      // Page 级别 hook, 只对当前 Page 的 setData 生效。
+      'before-setData': function (dirty) {
+        if (Math.random() < 0.2) {
+          // console.log('setData canceled');
+          return false; // Cancel setData
+        }
+        dirty.time = +new Date();
+        return dirty;
+      }
+    },
+
+
+
+    mixins: [],
+
+    data: {
+    },
+
+    computed: {
+      ...mapState([ 'counter' ]),
+      testcomputed () {
+        return 'computed - ' + this.mynum;
+      }
+    },
+
+    methods: {
+    },
+
+    created () {
+      let self = this
+      self.currentTime = +new Date();
+
+      self.setTimeoutTitle = '标题三秒后会被修改';
+      setTimeout(() => {
+        self.setTimeoutTitle = '到三秒了';
+      }, 3000);
+
+      // wx.getUserInfo({
+      //   success (res) {
+      //     self.userInfo = res.userInfo;
+      //   }
+      // });
+
+      // wx.getUserInfo()
+      // .then(res => {
+      //   console.warn(res.userInfo);
+      // })
+    }
+  });
+</script>
+<config>
+{
+    navigationBarTitleText: 'WePY 2.0 Feature Demo',
+    usingComponents: {
+    }
+}
+</config>
