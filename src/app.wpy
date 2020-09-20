@@ -58,7 +58,7 @@ wepy.app({
 {
     pages: [
       'pages/index',
-      'pages/index2',
+      'pages/me',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -84,13 +84,13 @@ wepy.app({
           "pagePath": "pages/index",
           "iconPath": "static/icon/homepage.png",
           "selectedIconPath": "static/icon/homepage_fill.png",
-          "text": "组件"
+          "text": ""
         },
         {
-          "pagePath": "pages/index2",
+          "pagePath": "pages/me",
           "iconPath": "static/icon/people.png",
           "selectedIconPath": "static/icon/people_fill.png",
-          "text": "接口"
+          "text": ""
         }
       ],
       position: 'bottom'
@@ -102,6 +102,9 @@ wepy.app({
       'van-cell-group': 'components/@vant/cell-group/index',
       'van-image': 'components/@vant/image/index',
       'van-dialog': 'components/@vant/dialog/index',
+      'van-grid': 'components/@vant/grid/index',
+      'van-grid-item': 'components/@vant/grid-item/index',
+      'van-icon': 'components/@vant/icon/index',
       'custom-tab-bar': 'components/custom-tab-bar'
     }
 

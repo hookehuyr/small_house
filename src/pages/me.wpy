@@ -1,0 +1,62 @@
+<style lang="less">
+
+</style>
+<template>
+  <div class="">
+    <view style="text-align: center; margin-top: 1rem;">
+      <van-image round width="5rem" height="5rem" src="https://img.yzcdn.cn/vant/cat.jpeg" />
+      <view>我的昵称</view>
+    </view>
+    <view style="margin-top: 2rem;">
+      <van-grid column-num="3" :border="false">
+        <van-grid-item icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/createtask.png" text="行程" />
+        <van-grid-item icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/customerservice.png" text="客服" />
+        <van-grid-item icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/editor.png" text="意见" />
+      </van-grid>
+    </view>
+    <custom-tab-bar></custom-tab-bar>
+  </div>
+</template>
+
+<script>
+  import wepy from '@wepy/core'
+  import { mapState } from '@wepy/x';
+  import store from '../store';
+  import testMixin from '../mixins/test'
+
+  const db = wx.cloud.database();
+  const _ = db.command;
+  const $ = db.command.aggregate;
+
+  wepy.page({
+    store,
+    config: {
+      navigationBarTitleText: '我的'
+    },
+
+    hooks: {
+    },
+
+
+
+    mixins: [testMixin],
+
+    data: {
+    },
+
+    computed: {
+      ...mapState([ 'counter' ])
+    },
+
+    methods: {
+    },
+
+    created () {
+    }
+  });
+</script>
+<config>
+{
+    navigationBarTitleText: '我的'
+}
+</config>

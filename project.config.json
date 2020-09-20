@@ -65,22 +65,9 @@
       "list": [
         {
           "id": -1,
-          "name": "腾讯云测试",
-          "pathName": "pages/cloud",
+          "name": "我的",
+          "pathName": "pages/me",
           "query": "",
-          "scene": null
-        },
-        {
-          "id": -1,
-          "name": "Todo",
-          "pathName": "pages/addTodo/addTodo",
-          "query": "",
-          "scene": null
-        },
-        {
-          "id": -1,
-          "name": "列表展示页",
-          "pathName": "pages/list",
           "scene": null
         }
       ]
