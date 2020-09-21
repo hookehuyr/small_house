@@ -1,0 +1,117 @@
+<style lang="less">
+  .tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 48px;
+    background: white;
+    display: flex;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .tab-bar-border {
+    background-color: rgba(0, 0, 0, 0.33);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 1px;
+    transform: scaleY(0.5);
+  }
+
+  .tab-bar-item {
+    flex: 1;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .tab-bar-item .cover-image {
+    width: 27px;
+    height: 27px;
+  }
+
+  .tab-bar-item .cover-view {
+    font-size: 10px;
+  }
+</style>
+<template>
+  <cover-view class="tab-bar">
+    <cover-view class="tab-bar-border"></cover-view>
+    <cover-view wx:for="{{list}}" wx:key="index" class="tab-bar-item" data-path="{{item.pagePath}}" data-index="{{index}}" bindtap="switchTab">
+      <cover-image class="cover-image" src="{{selected === index ? item.selectedIconPath : item.iconPath}}"></cover-image>
+      <cover-view class="cover-view" style="color: {{selected === index ? selectedColor : color}}">{{item.text}}</cover-view>
+    </cover-view>
+  </cover-view>
+</template>
+
+<script>
+  import wepy from '@wepy/core'
+  import { mapState } from '@wepy/x';
+  import store from '../store';
+
+  const db = wx.cloud.database();
+  const _ = db.command;
+  const $ = db.command.aggregate;
+
+  wepy.page({
+    store,
+    config: {
+      navigationBarTitleText: 'test'
+    },
+
+    hooks: {
+    },
+
+
+
+    mixins: [],
+
+    data: {
+      selected: 0,
+      color: "#7A7E83",
+      selectedColor: "#FF6600",
+      list: [{
+        pagePath: "../pages/index",
+        iconPath: "../static/icon/homepage.png",
+        selectedIconPath: "../static/icon/homepage_fill.png",
+        text: "指南"
+      }, {
+        pagePath: "../pages/me",
+        iconPath: "../static/icon/people.png",
+        selectedIconPath: "../static/icon/people_fill.png",
+        text: "我的"
+      }]
+    },
+
+    computed: {
+    },
+
+    methods: {
+      switchTab(e) {
+        const data = e.currentTarget.dataset
+        const url = data.path
+        wx.switchTab({url})
+      }
+    },
+
+    created () {
+    },
+
+    ready () {
+      let pages = getCurrentPages(); //获取加载的页面
+      let currentPage = pages[pages.length - 1]; //获取当前页面的对象
+      let url = currentPage.route ;//当前页面url
+      this.selected = url === 'pages/index' ? 0 : 1
+    },
+  });
+</script>
+<config>
+{
+    navigationBarTitleText: '腾讯云测试2',
+    component: true
+}
+</config>

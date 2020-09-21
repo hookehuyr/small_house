@@ -18,7 +18,7 @@
     "checkSiteMap": false,
     "uploadWithSourceMap": true,
     "compileHotReLoad": false,
-    "useMultiFrameRuntime": true,
+    "useMultiFrameRuntime": false,
     "useApiHook": true,
     "babelSetting": {
       "ignore": [],
@@ -65,8 +65,8 @@
       "list": [
         {
           "id": -1,
-          "name": "我的",
-          "pathName": "pages/me",
+          "name": "日程",
+          "pathName": "pages/schedule",
           "query": "",
           "scene": null
         }

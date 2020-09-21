@@ -1,0 +1,60 @@
+<style lang="less" scoped>
+  .calendar {
+    --calendar-height: 500px;
+  }
+</style>
+<template>
+  <div>
+      <van-calendar
+        title="日历"
+        poppable="{{ false }}"
+        show-confirm="{{ false }}"
+        class="calendar"
+      />
+  </div>
+</template>
+
+<script>
+  import wepy from '@wepy/core'
+  import { mapState } from '@wepy/x';
+  import store from '../store';
+  import testMixin from '../mixins/test'
+
+  const db = wx.cloud.database();
+  const _ = db.command;
+  const $ = db.command.aggregate;
+
+  wepy.page({
+    store,
+    config: {
+      navigationBarTitleText: '建议'
+    },
+
+    hooks: {
+    },
+
+
+
+    mixins: [testMixin],
+
+    data: {
+    },
+
+    computed: {
+      ...mapState([ 'counter' ])
+    },
+
+    methods: {
+    },
+
+    created () {
+    }
+  });
+</script>
+<config>
+{
+    navigationBarTitleText: '',
+    usingComponents: {
+    }
+}
+</config>

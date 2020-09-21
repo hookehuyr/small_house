@@ -1,0 +1,23 @@
+<!----------   wxs start ----------->
+<wxs module="utils" src="../wxs/utils.wxs"></wxs>
+<!----------   wxs end   ----------->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<view class="custom-class {{ utils.bem('goods-action', { safe: safeAreaInsetBottom }) }}">
+  <slot></slot>
+</view>

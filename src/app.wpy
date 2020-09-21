@@ -59,6 +59,7 @@ wepy.app({
     pages: [
       'pages/index',
       'pages/me',
+      'pages/schedule',
     ],
     window: {
       backgroundTextStyle: 'light',
@@ -96,15 +97,17 @@ wepy.app({
       position: 'bottom'
     },
     usingComponents: {
-      'van-button': 'components/@vant/button/index',
-      'van-field': 'components/@vant/field/index',
-      'van-cell': 'components/@vant/cell/index',
-      'van-cell-group': 'components/@vant/cell-group/index',
-      'van-image': 'components/@vant/image/index',
-      'van-dialog': 'components/@vant/dialog/index',
-      'van-grid': 'components/@vant/grid/index',
-      'van-grid-item': 'components/@vant/grid-item/index',
-      'van-icon': 'components/@vant/icon/index',
+      'van-button': '../static/vant/button/index',
+      'van-field': '../static/vant/field/index',
+      'van-cell': '../static/vant/cell/index',
+      'van-cell-group': '../static/vant/cell-group/index',
+      'van-image': '../static/vant/image/index',
+      'van-dialog': '../static/vant/dialog/index',
+      'van-grid': '../static/vant/grid/index',
+      'van-grid-item': '../static/vant/grid-item/index',
+      'van-icon': '../static/vant/icon/index',
+      'van-calendar': '../static/vant/calendar/index',
+      'van-panel': '../static/vant/panel/index',
       'custom-tab-bar': 'components/custom-tab-bar'
     }
 

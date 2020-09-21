@@ -1,0 +1,50 @@
+<style lang="less">
+
+</style>
+<template>
+  <div class="">
+  </div>
+</template>
+
+<script>
+  import wepy from '@wepy/core'
+  import { mapState } from '@wepy/x';
+  import store from '../store';
+  import testMixin from '../mixins/test'
+
+  const db = wx.cloud.database();
+  const _ = db.command;
+  const $ = db.command.aggregate;
+
+  wepy.page({
+    store,
+    config: {
+      navigationBarTitleText: '建议'
+    },
+
+    hooks: {
+    },
+
+
+
+    mixins: [testMixin],
+
+    data: {
+    },
+
+    computed: {
+      ...mapState([ 'counter' ])
+    },
+
+    methods: {
+    },
+
+    created () {
+    }
+  });
+</script>
+<config>
+{
+    navigationBarTitleText: '腾讯云测试2'
+}
+</config>

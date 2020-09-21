@@ -1,0 +1,10 @@
+{
+    "component": true,
+    "usingComponents": {
+        "van-button": "./../button/index",
+        "van-popup": "./../popup/index",
+        "van-toast": "./../toast/index",
+        "header": "./components/header/index",
+        "month": "./components/month/index"
+    }
+}

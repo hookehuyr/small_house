@@ -4,19 +4,26 @@
 <template>
   <div class="">
     <view style="text-align: center; margin-top: 1rem;">
-      <van-image round width="5rem" height="5rem" src="https://img.yzcdn.cn/vant/cat.jpeg" />
-      <view>我的昵称</view>
+      <van-image round width="5rem" height="5rem" :src="userInfo.avatarUrl" />
+      <view>{{ userInfo.nickName }}</view>
     </view>
     <view style="margin-top: 2rem;">
       <van-grid column-num="3" :border="false">
-        <van-grid-item icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/createtask.png" text="行程" />
+        <van-grid-item
+          link-type="navigateTo"
+          url="/pages/schedule"
+          icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/createtask.png" text="行程" />
         <van-grid-item use-slot icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/customerservice.png" text="客服">
-          <button open-type="contact">客服</button>
+          <button open-type="contact" @tap="myContact">客服</button>
         </van-grid-item>
         <van-grid-item icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/editor.png" text="意见" />
       </van-grid>
     </view>
     <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
+
+    <van-panel title="标题" desc="描述信息" status="状态">
+      <view>内容</view>
+    </van-panel>
 
     <custom-tab-bar></custom-tab-bar>
   </div>
@@ -46,6 +53,7 @@
     mixins: [testMixin],
 
     data: {
+      userInfo: ''
     },
 
     computed: {
@@ -56,13 +64,22 @@
       handleContact (evt) {
         console.warn(evt);
       },
-      bindGetUserInfo () {}
+      bindGetUserInfo () {},
+      myContact () {
+        // wx.cloud.callFunction({
+        //   name: 'message',
+        //   data: {
+        //     Content: '1'
+        //   }
+        // })
+      }
     },
 
     created () {
       wx.getUserInfo()
       .then(res => {
         console.warn(res.userInfo);
+        this.userInfo = res.userInfo
       })
       .catch(error => {
         console.error(error);

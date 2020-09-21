@@ -35,7 +35,7 @@ module.exports.getTime = getTime;
   import { mapState } from '@wepy/x';
   import store from '../store';
   // import testMixin from '../mixins/test'
-  import Dialog from '../components/@vant/dialog/dialog'
+  // import Dialog from '../../static/vant/dialog/dialog'
 
   wepy.page({
     store,
