@@ -8,6 +8,7 @@ cloud.init({
 
 // 云函数入口函数
 /**
+ * event 结构
  * {
    "FromUserName": "ohl4L0Rnhq7vmmbT_DaNQa4ePaz0",
    "ToUserName": "wx3d289323f5900f8e",
@@ -18,32 +19,27 @@ cloud.init({
  }
 */
 exports.main = async (event, context) => {
-  const wxContext = cloud.getWXContext()
+  const wxContext = cloud.getWXContext();
 
-  // 关键字 默认回复
-  let text = ''
-  switch (event.Content) {
-    case '白天':
-      text = '黑夜'
-      break;
-  }
-
-  if (text) {
+  if (event.Content == '1' || event.Content == '购买') {
+    await cloud.openapi.customerServiceMessage.send({
+      touser: wxContext.OPENID,
+      msgtype: 'link',
+      link: {
+        title: '课程名称',
+        description: '课程描述',
+        url: 'http://xxx.com/xxx'
+      }
+    });
+  } else {
     await cloud.openapi.customerServiceMessage.send({
       touser: wxContext.OPENID,
       msgtype: 'text',
       text: {
-        content: text,
-      },
-    })
-    return 'success'
-  } else {
-    return 'success'
-    // return {
-    //   MsgType: 'transfer_customer_service',
-    //   ToUserName: 'op0Vf5V6BCfnZmKRGBO-FVf-8QGc',
-    //   FromUserName: 'hooke1234',
-    //   CreateTime: parseInt(+new Date / 1000),
-    // }
+        content: '您好,很高兴为您服务。回复1:购买课程'
+      }
+    });
   }
-}
+
+  return 'success';
+};

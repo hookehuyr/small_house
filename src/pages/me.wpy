@@ -11,11 +11,12 @@
       <van-grid column-num="3" :border="false">
         <van-grid-item icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/createtask.png" text="行程" />
         <van-grid-item use-slot icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/customerservice.png" text="客服">
-          <button open-type="contact"  @contact="handleContact">客服</button>
+          <button open-type="contact">客服</button>
         </van-grid-item>
         <van-grid-item icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/editor.png" text="意见" />
       </van-grid>
     </view>
+    <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
 
     <custom-tab-bar></custom-tab-bar>
   </div>
@@ -54,10 +55,18 @@
     methods: {
       handleContact (evt) {
         console.warn(evt);
-      }
+      },
+      bindGetUserInfo () {}
     },
 
     created () {
+      wx.getUserInfo()
+      .then(res => {
+        console.warn(res.userInfo);
+      })
+      .catch(error => {
+        console.error(error);
+      })
     }
   });
 </script>
