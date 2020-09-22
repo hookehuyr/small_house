@@ -13,7 +13,7 @@ const db = cloud.database()
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   // 查询user表内 是否存在该用户信息
-  db.collection('user').where({
+  return await db.collection('user').where({
     _openid: wxContext.OPENID
   }).get()
   .then(res => {

@@ -49,6 +49,8 @@
         </van-row>
       </view>
     </view>
+
+    <van-toast id="van-toast" />
   </div>
 </template>
 
@@ -57,6 +59,7 @@
   import { mapState } from '@wepy/x';
   import store from '../store';
   import testMixin from '../mixins/test'
+  import Toast from '@/components/toast/toast'
 
   const db = wx.cloud.database();
   const _ = db.command;
@@ -132,24 +135,41 @@
     },
 
     created () {
-      // 默认查询当前日期 行程安排
-      this.schedule_detail = [{
-        start_datetime: '09:00',
-        end_datetime: '11:00',
-        note: '吉尼斯世界纪录博物馆帝国酒店',
-      }, {
-        start_datetime: '13:00',
-        end_datetime: '15:00',
-        note: '腓烈特堡花园',
-      }, {
-        start_datetime: '15:00',
-        end_datetime: '17:00',
-        note: '吃晚饭',
-      }, {
-        start_datetime: '17:00',
-        end_datetime: '19:00',
-        note: '篝火晚会',
-      }]
+      // 调用云函数查询当前日期 行程安排
+      wx.cloud.callFunction({
+        // 要调用的云函数名称
+        name: 'get_schedule',
+        data: {
+          date: dayjs().format('YYYY-MM-DD')
+        }
+      })
+      .then(res => {
+        if (res.errMsg === 'collection.aggregate:ok') {
+          console.warn(res);
+        } else {
+          console.warn(res);
+        }
+      })
+      .catch(err => {
+        console.error(err)
+      })
+      // this.schedule_detail = [{
+      //   start_datetime: '09:00',
+      //   end_datetime: '11:00',
+      //   note: '吉尼斯世界纪录博物馆帝国酒店',
+      // }, {
+      //   start_datetime: '13:00',
+      //   end_datetime: '15:00',
+      //   note: '腓烈特堡花园',
+      // }, {
+      //   start_datetime: '15:00',
+      //   end_datetime: '17:00',
+      //   note: '吃晚饭',
+      // }, {
+      //   start_datetime: '17:00',
+      //   end_datetime: '19:00',
+      //   note: '篝火晚会',
+      // }]
     }
   });
 </script>
