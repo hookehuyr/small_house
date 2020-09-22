@@ -9,6 +9,10 @@
 
 
 
+
+
+
+
 <view class="van-calendar__month" style="{{ computed.getMonthStyle(visible, date, rowHeight) }}">
   <view wx:if="{{ showMonthTitle }}" class="van-calendar__month-title">
     {{ computed.formatMonthTitle(date) }}

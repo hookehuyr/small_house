@@ -16,14 +16,13 @@
         <van-grid-item use-slot icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/customerservice.png" text="客服">
           <button open-type="contact" @tap="myContact">客服</button>
         </van-grid-item>
-        <van-grid-item icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/editor.png" text="意见" />
+        <van-grid-item
+          link-type="navigateTo"
+          url="/pages/suggest"
+          icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/editor.png" text="意见" />
       </van-grid>
     </view>
     <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
-
-    <van-panel title="标题" desc="描述信息" status="状态">
-      <view>内容</view>
-    </van-panel>
 
     <custom-tab-bar></custom-tab-bar>
   </div>

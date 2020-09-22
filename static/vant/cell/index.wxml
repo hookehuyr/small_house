@@ -18,6 +18,9 @@
 
 
 
+
+
+
 <view class="custom-class {{ utils.bem('cell', [size, { center, required, borderless: !border, clickable: isLink || clickable }]) }}" hover-class="van-cell--hover hover-class" hover-stay-time="70" style="{{ customStyle }}" bind:tap="onClick">
   <van-icon wx:if="{{ icon }}" name="{{ icon }}" class="van-cell__left-icon-wrap" custom-class="van-cell__left-icon"></van-icon>
   <slot wx:else="" name="icon"></slot>
