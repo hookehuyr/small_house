@@ -1,11 +1,14 @@
-<wxs src="../wxs/utils.wxs" module="utils" />
+<!----------   wxs start ----------->
+<wxs module="utils" src="../wxs/utils.wxs"></wxs>
+<!----------   wxs end   ----------->
+
 
 <view class="custom-class van-empty">
   <view class="van-empty__image">
     <slot name="image"></slot>
   </view>
   <view class="van-empty__image">
-    <image wx:if="{{ imageUrl }}" class="van-empty__image__img" src="{{ imageUrl }}" />
+    <image wx:if="{{ imageUrl }}" class="van-empty__image__img" src="{{ imageUrl }}"></image>
   </view>
 
   <view class="van-empty__description">

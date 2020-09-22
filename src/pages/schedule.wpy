@@ -1,16 +1,54 @@
 <style lang="less" scoped>
   .calendar {
-    --calendar-height: 450px;
+    --calendar-height: 50vh;
+  }
+  .item-wrapper {
+    font-size: 1rem;
+    margin: 1rem 0.5rem;
+    height: 50vh;
+    overflow: scroll;
+    .item-info {
+      margin: 0.5rem;
+      padding-top: 0.5rem;
+      padding-left: 0.5rem;
+      line-height: 1.5;
+      border-left: 5px solid #FF5500;
+      .name {
+        font-weight: bold;
+      }
+    }
   }
 </style>
 <template>
   <div>
-      <van-calendar
-        title="日历"
-        poppable="{{ false }}"
-        show-confirm="{{ false }}"
-        class="calendar"
-      />
+    <van-calendar
+      poppable="{{ false }}"
+      show-title="{{ false }}"
+      show-subtitle="{{ false }}"
+      show-confirm="{{ false }}"
+      default-date="{{ default_date }}"
+      max-date="{{ max_date }}"
+      formatter="{{ formatter }}"
+      class="calendar"
+      @select="selectDate"
+    />
+    <view class="item-wrapper">
+      <!-- <p>
+        <van-icon size="1rem" name="clock-o" />
+        {{ schedule_detail.start_datetime }} ~ {{ schedule_detail.end_datetime }}
+      </p> -->
+      <view v-for="(item, index) in schedule_detail" :key="index" class="item-info">
+        <van-row>
+          <van-col span="18">
+            <span class="name">{{ item.note }}</span>
+          </van-col>
+          <van-col span="6" style="text-align: right; font-size: 0.85rem;">
+            <view style="color: gray;">{{ item.start_datetime }}</view>
+            <view>{{ item.end_datetime }}</view>
+          </van-col>
+        </van-row>
+      </view>
+    </view>
   </div>
 </template>
 
@@ -24,10 +62,12 @@
   const _ = db.command;
   const $ = db.command.aggregate;
 
+  const dayjs = require('dayjs')
+
   wepy.page({
     store,
     config: {
-      navigationBarTitleText: '建议'
+      navigationBarTitleText: ''
     },
 
     hooks: {
@@ -38,6 +78,26 @@
     mixins: [testMixin],
 
     data: {
+      // mix_date: dayjs().subtract(1, 'M').valueOf(),
+      max_date: dayjs().add(1, 'M').valueOf(),
+      default_date: dayjs().valueOf(),
+      current_date: '',
+      schedule_detail: {},
+      formatter (day) {
+        /**
+         * topInfo 头上字
+         * text 替换日期
+         * bottomInfo 底下字
+         */
+        const month = day.date.getMonth() + 1;
+        const date = day.date.getDate();
+        if (month === 9) {
+          if (date >= 25 && date < 30) {
+            day.bottomInfo = '入住'
+          }
+        }
+        return day
+      }
     },
 
     computed: {
@@ -45,15 +105,57 @@
     },
 
     methods: {
+      selectDate (v) {
+        // 选中日期回调
+        this.current_date = v.$wx.detail;
+        // 使用点选日期查询当前用户当日日程安排
+        // console.warn(this.current_date);
+        // 查询结果
+        this.schedule_detail = [{
+          start_datetime: '09:00',
+          end_datetime: '11:00',
+          note: '东滩湿地公园',
+        }, {
+          start_datetime: '13:00',
+          end_datetime: '15:00',
+          note: '东平国家森林公园',
+        }, {
+          start_datetime: '15:00',
+          end_datetime: '17:00',
+          note: '吃晚饭',
+        }, {
+          start_datetime: '17:00',
+          end_datetime: '19:00',
+          note: '自由活动',
+        }]
+      }
     },
 
     created () {
+      // 默认查询当前日期 行程安排
+      this.schedule_detail = [{
+        start_datetime: '09:00',
+        end_datetime: '11:00',
+        note: '吉尼斯世界纪录博物馆帝国酒店',
+      }, {
+        start_datetime: '13:00',
+        end_datetime: '15:00',
+        note: '腓烈特堡花园',
+      }, {
+        start_datetime: '15:00',
+        end_datetime: '17:00',
+        note: '吃晚饭',
+      }, {
+        start_datetime: '17:00',
+        end_datetime: '19:00',
+        note: '篝火晚会',
+      }]
     }
   });
 </script>
 <config>
 {
-    navigationBarTitleText: '',
+    navigationBarTitleText: '日程安排',
     usingComponents: {
     }
 }

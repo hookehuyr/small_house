@@ -3,6 +3,18 @@
 </style>
 <template>
   <div class="">
+    <div style="padding: 1rem;">
+      <van-field
+        value="{{ message }}"
+        label="留言"
+        type="textarea"
+        placeholder="请输入留言"
+        autosize="{ maxHeight: 100, minHeight: 50 }"
+        border="{{ true }}"
+      />
+    </div>
+
+    <van-button color="#FF5500" block style="position: absolute; bottom: 0; width: 100%;">提交</van-button>
   </div>
 </template>
 
@@ -30,6 +42,7 @@
     mixins: [testMixin],
 
     data: {
+      message: ''
     },
 
     computed: {
@@ -45,6 +58,6 @@
 </script>
 <config>
 {
-    navigationBarTitleText: '腾讯云测试2'
+    navigationBarTitleText: '建议'
 }
 </config>

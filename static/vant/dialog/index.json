@@ -3,7 +3,7 @@
     "usingComponents": {
         "van-button": "./../button/index",
         "van-popup": "./../popup/index",
-        "van-goods-action": "./../goods-action/index",
-        "van-goods-action-button": "./../goods-action-button/index"
+        "van-goods-action-button": "./../goods-action-button/index",
+        "van-goods-action": "./../goods-action/index"
     }
 }

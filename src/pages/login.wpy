@@ -1,0 +1,136 @@
+<style lang="less">
+
+</style>
+<template>
+  <div class="">
+    <van-cell-group>
+      <van-field
+        value="{{ tel }}"
+        label="手机号"
+        placeholder="请输入下单的手机号"
+        error-message="{{ error_tel }}"
+        border="{{ true }}"
+        type="digit"
+        required
+        clickable
+        @blur="onTelBlur"
+      />
+      <van-field
+        value="{{ sms }}"
+        center
+        clearable
+        label="短信验证码"
+        placeholder="请输入短信验证码"
+        border="{{ false }}"
+        type="number"
+        required disabled="{{ sms_disable }}"
+        use-button-slot>
+        <van-button @tap="sendSms" slot="button" size="small" type="primary" disabled="{{ sms_disable }}">发送验证码</van-button>
+      </van-field>
+    </van-cell-group>
+
+    <van-button @tap="submit" type="default" block style="position: absolute; bottom: 0; width: 100%;">提交</van-button>
+
+    <van-toast id="van-toast" />
+  </div>
+</template>
+
+<script>
+  import wepy from '@wepy/core'
+  import { mapState } from '@wepy/x';
+  import store from '../store';
+  import testMixin from '../mixins/test'
+  import Toast from '@/components/toast/toast'
+
+  const db = wx.cloud.database();
+  const _ = db.command;
+  const $ = db.command.aggregate;
+
+  wepy.page({
+    store,
+    config: {
+      navigationBarTitleText: ''
+    },
+
+    hooks: {
+    },
+
+
+
+    mixins: [testMixin],
+
+    data: {
+      error_tel: '',
+      tel: '13761653761',
+      sms: '',
+      sms_disable: true
+    },
+
+    computed: {
+      ...mapState([ 'counter' ])
+    },
+
+    methods: {
+      onTelBlur (v) {
+        // 失焦验证
+        let tel = v.$wx.detail.value;
+        if (!(/^1[3456789]\d{9}$/.test(tel))) {
+          this.error_phone = '手机号码有误'
+          this.sms_disable = true
+          return false;
+        }
+        // 后台验证手机号 是否已经在数据库存在
+        db.collection('user').where({ tel }).get()
+        .then(res => {
+          if (res.errMsg === 'collection.get:ok') {
+            if (res.data.length) {
+              //
+              this.error_phone = ''
+              this.sms_disable = false
+            } else {
+              Toast('输入手机号未录入, 请联系客服');
+            }
+          } else {
+            console.warn(res);
+            Toast.fail('查询失败');
+            return false
+          }
+        })
+        .catch(error => {
+          console.error(error);
+          Toast.fail('系统错误');
+          return false
+        });
+      },
+      sendSms () {
+        // 发送短信
+        if (!this.sms_disable) {
+          console.warn(this.tel);
+        }
+      },
+      submit () {
+        // 调用云函数绑定手机号
+        wx.cloud.callFunction({
+          // 要调用的云函数名称
+          name: 'init_login',
+          data: {
+            tel: this.tel
+          }
+        }).then(res => {
+          console.warn(res);
+        }).catch(err => {
+          console.error(error);
+          Toast.fail('系统错误');
+        })
+      }
+    },
+
+    created () {
+    }
+  });
+</script>
+<config>
+{
+    navigationBarTitleText: '手机验证'
+}
+</config>

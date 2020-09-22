@@ -19,7 +19,7 @@
   wepy.page({
     store,
     config: {
-      navigationBarTitleText: 'test'
+      navigationBarTitleText: ''
     },
 
     hooks: {
@@ -45,6 +45,6 @@
 </script>
 <config>
 {
-    navigationBarTitleText: '腾讯云测试2'
+    navigationBarTitleText: ''
 }
 </config>

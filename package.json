@@ -19,6 +19,7 @@
     "@vant/weapp": "^1.5.0",
     "@wepy/core": "^2.0.0-alpha.16",
     "@wepy/x": "^2.0.2",
+    "dayjs": "^1.8.36",
     "miniprogram-slide-view": "0.0.3",
     "vue": "^2.6.12",
     "wx-promise-pro": "^3.2.0"

@@ -1,26 +1,30 @@
-import { VantComponent } from '../common/component';
-VantComponent({
+"use strict";
+
+var _component = require('./../common/component.js');
+
+(0, _component.VantComponent)({
   relation: {
     name: 'row',
     type: 'ancestor',
-    current: 'col',
+    current: 'col'
   },
   props: {
     span: Number,
-    offset: Number,
+    offset: Number
   },
   data: {
-    viewStyle: '',
+    viewStyle: ''
   },
   methods: {
-    setGutter(gutter) {
-      const padding = `${gutter / 2}px`;
-      const viewStyle = gutter
-        ? `padding-left: ${padding}; padding-right: ${padding};`
-        : '';
+    setGutter: function setGutter(gutter) {
+      var padding = "".concat(gutter / 2, "px");
+      var viewStyle = gutter ? "padding-left: ".concat(padding, "; padding-right: ").concat(padding, ";") : '';
+
       if (viewStyle !== this.data.viewStyle) {
-        this.setData({ viewStyle });
+        this.setData({
+          viewStyle: viewStyle
+        });
       }
-    },
-  },
+    }
+  }
 });

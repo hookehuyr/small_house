@@ -1,30 +1,47 @@
 <style lang="less">
-
+  .bottom-button {
+    width: 160px;
+    height: 40px;
+  }
 </style>
 <template>
   <div class="">
-    <view style="text-align: center; margin-top: 1rem;">
-      <van-image round width="5rem" height="5rem" :src="userInfo.avatarUrl" />
-      <view>{{ userInfo.nickName }}</view>
+    <view v-if="auth_show">
+      <view style="text-align: center; margin-top: 1rem;">
+        <van-image round width="5rem" height="5rem" :src="userInfo.avatarUrl" />
+        <view>{{ userInfo.nickName }}</view>
+      </view>
+      <view style="margin-top: 2rem;">
+        <van-grid column-num="2" :border="false">
+          <van-grid-item use-slot>
+            <van-button @tap="goSchedule" type="default">我的行程</van-button>
+          </van-grid-item>
+          <van-grid-item
+            link-type="navigateTo"
+            url="/pages/suggest"
+            icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/editor.png" text="意见" />
+        </van-grid>
+        <van-grid column-num="2" :border="false">
+          <van-grid-item use-slot>
+            <button open-type="contact" @tap="myContact">客服</button>
+          </van-grid-item>
+        </van-grid>
+        <van-grid column-num="2" :border="false">
+          <van-grid-item use-slot icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/customerservice.png" text="客服">
+            <button @tap="validTel">手机验证</button>
+          </van-grid-item>
+        </van-grid>
+      </view>
     </view>
-    <view style="margin-top: 2rem;">
-      <van-grid column-num="3" :border="false">
-        <van-grid-item
-          link-type="navigateTo"
-          url="/pages/schedule"
-          icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/createtask.png" text="行程" />
-        <van-grid-item use-slot icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/customerservice.png" text="客服">
-          <button open-type="contact" @tap="myContact">客服</button>
-        </van-grid-item>
-        <van-grid-item
-          link-type="navigateTo"
-          url="/pages/suggest"
-          icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/editor.png" text="意见" />
-      </van-grid>
+    <view v-else>
+      <van-empty description="请先微信登录查询您的信息">
+        <van-button open-type="getUserInfo" type="default" @getuserinfo="bindGetUserInfo">授权登录</van-button>
+      </van-empty>
     </view>
-    <button open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
 
     <custom-tab-bar></custom-tab-bar>
+
+    <van-toast id="van-toast" />
   </div>
 </template>
 
@@ -33,6 +50,7 @@
   import { mapState } from '@wepy/x';
   import store from '../store';
   import testMixin from '../mixins/test'
+  import Toast from '@/components/toast/toast'
 
   const db = wx.cloud.database();
   const _ = db.command;
@@ -52,7 +70,8 @@
     mixins: [testMixin],
 
     data: {
-      userInfo: ''
+      userInfo: '',
+      auth_show: false
     },
 
     computed: {
@@ -61,24 +80,43 @@
 
     methods: {
       handleContact (evt) {
-        console.warn(evt);
+        // console.warn(evt);
       },
-      bindGetUserInfo () {},
-      myContact () {
-        // wx.cloud.callFunction({
-        //   name: 'message',
-        //   data: {
-        //     Content: '1'
-        //   }
-        // })
+      bindGetUserInfo (evt) {
+        // 授权成功后 获取用户信息
+        if (evt.$wx.detail.errMsg === 'getUserInfo:ok') {
+          this.userInfo = JSON.parse(evt.$wx.detail.rawData);
+          this.auth_show = true;
+          // 调用云函数新增用户
+          wx.cloud.callFunction({
+            // 要调用的云函数名称
+            name: 'init_login',
+            data: {}
+          }).then(res => {
+            console.warn(res);
+          }).catch(err => {
+            console.error(error);
+            Toast.fail('系统错误');
+          })
+        }
+      },
+      myContact () {},
+      validTel () {
+      },
+      goSchedule () {
+        // 跳转行程页
+        wx.navigateTo({ url: '/pages/login' });
       }
     },
 
     created () {
+      // 微信登录授权查询
       wx.getUserInfo()
       .then(res => {
-        console.warn(res.userInfo);
-        this.userInfo = res.userInfo
+        if (res.errMsg === "getUserInfo:ok") {
+          this.userInfo = res.userInfo;
+          this.auth_show = true;
+        }
       })
       .catch(error => {
         console.error(error);

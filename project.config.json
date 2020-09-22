@@ -69,6 +69,26 @@
           "pathName": "pages/schedule",
           "query": "",
           "scene": null
+        },
+        {
+          "id": -1,
+          "name": "我的",
+          "pathName": "pages/me",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "留言建议",
+          "pathName": "pages/suggest",
+          "query": "",
+          "scene": null
+        },
+        {
+          "id": -1,
+          "name": "手机登录",
+          "pathName": "pages/login",
+          "scene": null
         }
       ]
     }
