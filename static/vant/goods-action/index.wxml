@@ -66,6 +66,9 @@
 
 
 
+
+
+
 <view class="custom-class {{ utils.bem('goods-action', { safe: safeAreaInsetBottom }) }}">
   <slot></slot>
 </view>

@@ -89,6 +89,10 @@
 
 
 
+
+
+
+
 <van-cell size="{{ size }}" icon="{{ leftIcon }}" center="{{ center }}" border="{{ border }}" is-link="{{ isLink }}" required="{{ required }}" clickable="{{ clickable }}" title-width="{{ titleWidth }}" title-style="margin-right: 12px;" custom-style="{{ customStyle }}" arrow-direction="{{ arrowDirection }}" custom-class="van-field" title-class="label-class">
   <slot name="left-icon" slot="icon"></slot>
   <view wx:if="{{ label }}" class="{{ utils.bem('field__label', { disabled }) }}" slot="title">

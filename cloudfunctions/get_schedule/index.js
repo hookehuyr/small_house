@@ -25,16 +25,16 @@ exports.main = async (event, context) => {
     .match({
       date: event.date
     })
+    .project({
+      schedule: 1,
+      date: 1
+    })
     .end()
+    .then(res => {
+      console.warn(res);
+    })
     return result
   } catch (error) {
     console.error(error)
   }
-
-  // return {
-  //   event,
-  //   openid: wxContext.OPENID,
-  //   appid: wxContext.APPID,
-  //   unionid: wxContext.UNIONID,
-  // }
 }

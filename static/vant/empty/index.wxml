@@ -3,6 +3,9 @@
 <!----------   wxs end   ----------->
 
 
+
+
+
 <view class="custom-class van-empty">
   <view class="van-empty__image">
     <slot name="image"></slot>

@@ -110,66 +110,38 @@
     methods: {
       selectDate (v) {
         // 选中日期回调
-        this.current_date = v.$wx.detail;
+        this.current_date = dayjs(v.$wx.detail).format('YYYY-MM-DD');
         // 使用点选日期查询当前用户当日日程安排
-        // console.warn(this.current_date);
-        // 查询结果
-        this.schedule_detail = [{
-          start_datetime: '09:00',
-          end_datetime: '11:00',
-          note: '东滩湿地公园',
-        }, {
-          start_datetime: '13:00',
-          end_datetime: '15:00',
-          note: '东平国家森林公园',
-        }, {
-          start_datetime: '15:00',
-          end_datetime: '17:00',
-          note: '吃晚饭',
-        }, {
-          start_datetime: '17:00',
-          end_datetime: '19:00',
-          note: '自由活动',
-        }]
+        this.getScheduleDetail(this.current_date)
+      },
+      getScheduleDetail (date = dayjs().format('YYYY-MM-DD')) {
+        wx.showLoading();
+        // 调用云函数查询当前日期 行程安排
+        wx.cloud.callFunction({
+          // 要调用的云函数名称
+          name: 'get_schedule',
+          data: {
+            date
+          }
+        })
+        .then(res => {
+          if (res.result && res.result.errMsg === 'collection.aggregate:ok') {
+            this.schedule_detail = res.result.list[0]['schedule'];
+            wx.hideLoading();
+          } else {
+            console.warn(res);
+            wx.hideLoading();
+          }
+        })
+        .catch(err => {
+          console.error(err)
+          wx.hideLoading();
+        })
       }
     },
 
     created () {
-      // 调用云函数查询当前日期 行程安排
-      wx.cloud.callFunction({
-        // 要调用的云函数名称
-        name: 'get_schedule',
-        data: {
-          date: dayjs().format('YYYY-MM-DD')
-        }
-      })
-      .then(res => {
-        if (res.errMsg === 'collection.aggregate:ok') {
-          console.warn(res);
-        } else {
-          console.warn(res);
-        }
-      })
-      .catch(err => {
-        console.error(err)
-      })
-      // this.schedule_detail = [{
-      //   start_datetime: '09:00',
-      //   end_datetime: '11:00',
-      //   note: '吉尼斯世界纪录博物馆帝国酒店',
-      // }, {
-      //   start_datetime: '13:00',
-      //   end_datetime: '15:00',
-      //   note: '腓烈特堡花园',
-      // }, {
-      //   start_datetime: '15:00',
-      //   end_datetime: '17:00',
-      //   note: '吃晚饭',
-      // }, {
-      //   start_datetime: '17:00',
-      //   end_datetime: '19:00',
-      //   note: '篝火晚会',
-      // }]
+      this.getScheduleDetail()
     }
   });
 </script>
