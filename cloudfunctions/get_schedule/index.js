@@ -30,9 +30,6 @@ exports.main = async (event, context) => {
       date: 1
     })
     .end()
-    .then(res => {
-      console.warn(res);
-    })
     return result
   } catch (error) {
     console.error(error)

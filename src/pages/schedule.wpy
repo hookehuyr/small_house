@@ -126,7 +126,12 @@
         })
         .then(res => {
           if (res.result && res.result.errMsg === 'collection.aggregate:ok') {
-            this.schedule_detail = res.result.list[0]['schedule'];
+            console.warn(res.result.list);
+            if (res.result.list.length) {
+              this.schedule_detail = res.result.list[0]['schedule'];
+            } else {
+              this.schedule_detail = []
+            }
             wx.hideLoading();
           } else {
             console.warn(res);

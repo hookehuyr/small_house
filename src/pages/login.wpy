@@ -61,9 +61,9 @@
 
     data: {
       error_tel: '',
-      tel: '13761653761',
+      tel: '1376165376',
       sms: '',
-      sms_disable: true
+      sms_disable: true,
     },
 
     computed: {
@@ -117,7 +117,11 @@
             tel: this.tel
           }
         }).then(res => {
-          console.warn(res);
+          if (res.result.ret === 'OK') {
+            //
+          } else {
+            Toast.fail(res.result.msg);
+          }
         }).catch(err => {
           console.error(error);
           Toast.fail('系统错误');

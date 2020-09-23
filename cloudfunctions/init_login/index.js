@@ -7,56 +7,90 @@ cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV
 })
 
-const db = cloud.database()
+const db = cloud.database();
+const _ = db.command;
 
 // 云函数入口函数
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
-  // 查询user表内 是否存在该用户信息
-  return await db.collection('user').where({
-    _openid: wxContext.OPENID
-  }).get()
-  .then(res => {
-    if (!res.data.length) {
-      // 如果用户信息不存在 把信息写入表中
-      db.collection('user').add({
+
+  try {
+    // 查询user表内 是否存在该用户信息
+    let userExist = await db.collection('user').where({
+      _openid: wxContext.OPENID
+    }).get()
+    .then(res => {
+      if (res.errMsg === 'collection.get:ok') {
+        return res.data
+      }
+    });
+
+    // 如果不存在新增用户信息
+    let userAdd = null;
+    let userTelExist = null;
+    if (!userExist.length) {
+      userAdd = await db.collection('user').add({
         data: {
           '_openid': wxContext.OPENID,
           'create_time': db.serverDate()
         }
       })
       return {
-        data: {
-          ret: 'OK',
-          msg: '新增用户成功'
-        }
+        ret: 'OK',
+        msg: '新增用户成功'
+      };
+    }
+
+    // 如果用户已经存在 检查手机号是否存在
+    let _id = userExist[0]._id
+    userTelExist = await db.collection('user')
+    .where({
+      _id,
+      tel: _.exists(true)
+    })
+    .get()
+    .then(res => {
+      if (res.errMsg === 'collection.get:ok') {
+        return res.data
       }
-    } else {
-      // 如果信息存在 手机号码也验证通过 绑定到openid 上
-      let tel = event.tel;
-      if (!(/^1[3456789]\d{9}$/.test(tel))) {
-        return {
-          data: {
-            ret: 'ERROR',
-            msg: '手机格式错误'
-          }
-        }
+    });
+    if (userTelExist.length) {
+      return {
+        ret: 'ERROR',
+        msg: '该手机号已存在'
+      };
+    }
+
+    // 绑定手机号 与 openid
+    if (!(/^1[3456789]\d{9}$/.test(event.tel))) {
+      return {
+        ret: 'ERROR',
+        msg: '请输入正确手机号码格式'
       }
-      // 绑定手机号与openid
-      db.collection('user')
+    }
+    let bindTel = await db.collection('user')
       .where({
         _openid: wxContext.OPENID
       })
       .update({
         data: {
-          tel
+          tel: event.tel
         },
       })
+      .then(res => {
+        return res
+      })
+    // 判断手机号是否已经绑定
+    if (bindTel.stats.updated) {
+      return {
+        ret: 'OK',
+        msg: '绑定手机号成功'
+      };
     }
-  })
-  .catch(error => {
+  } catch (error) {
     console.error(error);
-  })
+    return error;
+  }
 
   // return {
   //   event,

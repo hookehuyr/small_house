@@ -26,11 +26,11 @@
             <button open-type="contact" @tap="myContact">客服</button>
           </van-grid-item>
         </van-grid>
-        <van-grid column-num="2" :border="false">
+        <!-- <van-grid column-num="2" :border="false">
           <van-grid-item use-slot icon="cloud://small-house-hhf1r.736d-small-house-hhf1r-1303073349/customerservice.png" text="客服">
             <button @tap="validTel">手机验证</button>
           </van-grid-item>
-        </van-grid>
+        </van-grid> -->
       </view>
     </view>
     <view v-else>
@@ -38,6 +38,8 @@
         <van-button open-type="getUserInfo" type="default" @getuserinfo="bindGetUserInfo">授权登录</van-button>
       </van-empty>
     </view>
+
+    <!-- <button @tap="testFunction">云函数测试</button> -->
 
     <custom-tab-bar></custom-tab-bar>
 
@@ -106,6 +108,19 @@
       goSchedule () {
         // 跳转行程页
         wx.navigateTo({ url: '/pages/login' });
+      },
+      testFunction () {
+        // 调用云函数新增用户
+        wx.cloud.callFunction({
+          // 要调用的云函数名称
+          name: 'init_login',
+          data: {}
+        }).then(res => {
+          // console.warn(res);
+        }).catch(err => {
+          console.error(error);
+          Toast.fail('系统错误');
+        })
       }
     },
 
