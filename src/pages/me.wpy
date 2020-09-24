@@ -39,7 +39,7 @@
       </van-empty>
     </view>
 
-    <!-- <button @tap="testFunction">云函数测试</button> -->
+    <button @tap="testFunction">云函数测试-发验证码</button>
 
     <custom-tab-bar></custom-tab-bar>
 
@@ -110,14 +110,21 @@
         wx.navigateTo({ url: '/pages/login' });
       },
       testFunction () {
-        // 调用云函数新增用户
+        // 调用云函数
         wx.cloud.callFunction({
           // 要调用的云函数名称
-          name: 'init_login',
-          data: {}
+          name: 'sms_service',
+          data: {
+            tel: '1376165376'
+          }
         }).then(res => {
-          // console.warn(res);
-        }).catch(err => {
+          if (res.result.ret === 'OK') {
+            //
+            Toast(res.result.msg)
+          } else {
+            Toast.fail(res.result.msg);
+          }
+        }).catch(error => {
           console.error(error);
           Toast.fail('系统错误');
         })
