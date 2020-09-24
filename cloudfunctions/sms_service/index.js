@@ -33,13 +33,13 @@ function generateMixed(n) {
 */
 function validTelAndInterval(tel) {
   // 手机号格式校验
-  // if (!(/^1[3456789]\d{9}$/.test(tel))) {
-  //   return {
-  //     ret: 'ERROR',
-  //     msg: '手机号格式有误',
-  //     content: ''
-  //   };
-  // }
+  if (!(/^1[3456789]\d{9}$/.test(tel))) {
+    return {
+      ret: 'ERROR',
+      msg: '手机号格式有误',
+      content: ''
+    };
+  }
   // 查询 sms 表内 是否发送过验证码
   return db.collection('sms').where({
     tel
