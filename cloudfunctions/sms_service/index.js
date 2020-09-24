@@ -157,7 +157,6 @@ exports.main = async (event, context) => {
         })
         .catch(error => {
           console.error(error);
-          return error;
         });
       } else {
         // 手机号未发送验证码 新增验证码和创建时间
@@ -178,7 +177,6 @@ exports.main = async (event, context) => {
         })
         .catch(error => {
           console.error(error);
-          return error;
         });
       }
     } else {
